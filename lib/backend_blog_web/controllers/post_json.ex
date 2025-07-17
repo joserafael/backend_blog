@@ -27,7 +27,10 @@ defmodule BackendBlogWeb.PostJSON do
     %{
       id: post.id,
       title: post.title,
-      body: post.body
+      body: post.body,
+      draft: post.draft,
+      inserted_at: post.inserted_at,
+      updated_at: post.updated_at
     }
   end
 end
