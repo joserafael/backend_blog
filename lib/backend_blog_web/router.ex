@@ -5,8 +5,9 @@ defmodule BackendBlogWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", BackendBlogWeb do
+  scope "/api", BackendBlogWeb, as: :api do
     pipe_through :api
+    resources "/posts", PostController, except: [:new, :edit]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
