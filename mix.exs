@@ -49,6 +49,7 @@ defmodule BackendBlog.MixProject do
       {:guardian, "~> 2.0"},
       {:dotenv, "~> 3.0.0", only: [:dev, :test]},
       {:faker, "~> 0.17", only: :dev},
+      {:scrivener_ecto, "~> 2.7"},
     ]
   end
 
