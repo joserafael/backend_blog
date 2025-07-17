@@ -29,7 +29,7 @@ Repo.transaction(fn ->
   posts =
     Enum.map(1..200, fn i ->
       %{
-        title: "Post #{i}: " <> Faker.Lorem.sentence(4..8),
+        title: Faker.Lorem.sentence(4..8),
         body: Faker.Lorem.paragraphs(2..6) |> Enum.join("\n\n"),
         draft: Enum.random([true, false]),
         inserted_at: now,
