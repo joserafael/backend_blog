@@ -47,7 +47,8 @@ defmodule BackendBlog.MixProject do
       {:bandit, "~> 1.5"},
       {:bcrypt_elixir, "~> 3.0"},
       {:guardian, "~> 2.0"},
-      {:dotenv, "~> 3.0.0", only: [:dev, :test]}
+      {:dotenv, "~> 3.0.0", only: [:dev, :test]},
+      {:faker, "~> 0.17", only: :dev},
     ]
   end
 
