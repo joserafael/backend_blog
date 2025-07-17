@@ -22,6 +22,26 @@ defmodule BackendBlog.Blog do
   end
 
   @doc """
+  Gets a single post, returns a tuple.
+
+  Returns `{:ok, post}` if the post is found, otherwise `{:error, :not_found}`.
+
+  ## Examples
+
+      iex> get_post("some-id")
+      {:ok, %Post{}}
+
+      iex> get_post("not-found-id")
+      {:error, :not_found}
+  """
+  def get_post(id) do
+    case Repo.get(Post, id) do
+      nil -> {:error, :not_found}
+      post -> {:ok, post}
+    end
+  end
+
+  @doc """
   Gets a single post.
 
   Raises `Ecto.NoResultsError` if the Post does not exist.

@@ -21,22 +21,21 @@ defmodule BackendBlogWeb.PostController do
   end
 
   def show(conn, %{"id" => id}) do
-    post = Blog.get_post!(id)
-    render(conn, :show, post: post)
+    with {:ok, post} <- Blog.get_post(id) do
+      render(conn, :show, post: post)
+    end
   end
 
   def update(conn, %{"id" => id, "post" => post_params}) do
-    post = Blog.get_post!(id)
-
-    with {:ok, %Post{} = post} <- Blog.update_post(post, post_params) do
+    with {:ok, post} <- Blog.get_post(id),
+         {:ok, %Post{} = post} <- Blog.update_post(post, post_params) do
       render(conn, :show, post: post)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    post = Blog.get_post!(id)
-
-    with {:ok, %Post{}} <- Blog.delete_post(post) do
+    with {:ok, post} <- Blog.get_post(id),
+         {:ok, %Post{}} <- Blog.delete_post(post) do
       send_resp(conn, :no_content, "")
     end
   end
