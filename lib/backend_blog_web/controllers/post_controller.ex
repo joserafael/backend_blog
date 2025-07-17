@@ -2,13 +2,14 @@ defmodule BackendBlogWeb.PostController do
   use BackendBlogWeb, :controller
 
   alias BackendBlog.Blog
+  alias BackendBlog.Repo
   alias BackendBlog.Blog.Post
 
   action_fallback BackendBlogWeb.FallbackController
 
-  def index(conn, _params) do
-    posts = Blog.list_posts()
-    render(conn, :index, posts: posts)
+  def index(conn, params) do
+    page = Blog.list_posts() |> Repo.paginate(params)
+    render(conn, :index, page: page)
   end
 
   def create(conn, %{"post" => post_params}) do
