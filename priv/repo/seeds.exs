@@ -22,16 +22,16 @@ Repo.transaction(fn ->
   Repo.delete_all(Post)
 
   # Create a user if they don't exist
-  if is_nil(Accounts.get_user_by_email("jose20camejo@gmail.com")) do
-    IO.puts("Creating user jose20camejo@gmail.com...")
+  if is_nil(Accounts.get_user_by_email("user@editor.com")) do
+    IO.puts("Creating user user@editor.com...")
 
     {:ok, _user} =
       Accounts.create_user(%{
-        email: "jose20camejo@gmail.com",
-        password: "SaoPaulo@2025"
+        email: "user@editor.com",
+        password: "editor2025"
       })
   else
-    IO.puts("User jose20camejo@gmail.com already exists, skipping.")
+    IO.puts("User user@editor.com already exists, skipping.")
   end
 
   IO.puts("Generating 200 new posts...")
