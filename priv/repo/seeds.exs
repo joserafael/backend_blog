@@ -11,6 +11,7 @@
 # and so on) as they will fail if something goes wrong.
 alias BackendBlog.Repo
 alias BackendBlog.Blog.Post
+alias BackendBlog.Accounts
 
 # We recommend running the seeds inside a transaction, so that if
 # something goes wrong, the whole operation is rolled back.
@@ -20,6 +21,19 @@ Repo.transaction(fn ->
   IO.puts("Deleting existing posts...")
   Repo.delete_all(Post)
 
+  # Create a user if they don't exist
+  if is_nil(Accounts.get_user_by_email("jose20camejo@gmail.com")) do
+    IO.puts("Creating user jose20camejo@gmail.com...")
+
+    {:ok, _user} =
+      Accounts.create_user(%{
+        email: "jose20camejo@gmail.com",
+        password: "SaoPaulo@2025"
+      })
+  else
+    IO.puts("User jose20camejo@gmail.com already exists, skipping.")
+  end
+
   IO.puts("Generating 200 new posts...")
 
   # Get the current time to use for all timestamps.
@@ -27,7 +41,7 @@ Repo.transaction(fn ->
 
   # Generate 200 fake posts in memory
   posts =
-    Enum.map(1..200, fn i ->
+    Enum.map(1..200, fn _ ->
       %{
         title: Faker.Lorem.sentence(4..8),
         body: Faker.Lorem.paragraphs(2..6) |> Enum.join("\n\n"),
