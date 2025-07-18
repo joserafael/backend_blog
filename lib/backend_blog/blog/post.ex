@@ -6,6 +6,7 @@ defmodule BackendBlog.Blog.Post do
     field :title, :string
     field :body, :string
     field :draft, :boolean, default: false
+    belongs_to :user, BackendBlog.Accounts.User
 
     timestamps(type: :utc_datetime)
   end
@@ -13,7 +14,7 @@ defmodule BackendBlog.Blog.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:title, :body, :draft])
-    |> validate_required([:title, :body, :draft])
+    |> cast(attrs, [:title, :body, :draft, :user_id])
+    |> validate_required([:title, :body, :draft, :user_id])
   end
 end

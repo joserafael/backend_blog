@@ -5,9 +5,32 @@ defmodule BackendBlogWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug Guardian.Plug.VerifyHeader, module: BackendBlog.Guardian, error_handler: BackendBlogWeb.GuardianErrorHandler
+    plug Guardian.Plug.EnsureAuthenticated, module: BackendBlog.Guardian, error_handler: BackendBlogWeb.GuardianErrorHandler
+    plug Guardian.Plug.LoadResource, module: BackendBlog.Guardian, error_handler: BackendBlogWeb.GuardianErrorHandler
+  end
+
   scope "/api", BackendBlogWeb, as: :api do
     pipe_through :api
-    resources "/posts", PostController, except: [:new, :edit]
+    
+    # Authentication routes
+    post "/auth/register", AuthController, :register
+    post "/auth/login", AuthController, :login
+    
+    # Public routes
+    get "/posts", PostController, :index
+    get "/posts/:id", PostController, :show
+  end
+
+  scope "/api", BackendBlogWeb, as: :api do
+    pipe_through [:api, :auth]
+    
+    # Protected routes
+    post "/posts", PostController, :create
+    put "/posts/:id", PostController, :update
+    patch "/posts/:id", PostController, :update
+    delete "/posts/:id", PostController, :delete
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
