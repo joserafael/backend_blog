@@ -66,6 +66,10 @@ The API is available at `http://localhost:4000/api`. The following endpoints are
 - `DELETE /api/posts/:id`
   - **Description**: Deletes a post belonging to the authenticated user.
 
+## Postman Collection
+
+The file `Api blog.postman_collection.json` is included in the root of the project. You can import this file into Postman to have a ready-to-use collection for testing all the API endpoints.
+
 ## Common Commands
 
 ### Start services
