@@ -27,6 +27,45 @@ This project includes Docker configuration for easy development setup with MySQL
 - **Environment**: development
 - **Auto-migration**: Yes (runs on container start)
 
+## API Endpoints
+
+The API is available at `http://localhost:4000/api`. The following endpoints are provided, based on the included Postman collection.
+
+### Authentication
+
+- `POST /api/auth/register`
+  - **Description**: Registers a new user.
+  - **Request Body**: `{ "user": { "email": "user@example.com", "password": "password" } }`
+- `POST /api/auth/login`
+  - **Description**: Logs in a user and returns a JWT bearer token.
+  - **Request Body**: `{ "email": "user@example.com", "password": "password" }`
+
+### Posts
+
+#### Public Endpoints (No Authentication Required)
+
+- `GET /api/posts_published`
+  - **Description**: Retrieves a paginated list of all published posts.
+  - **Query Parameters**: `page`, `page_size`, `title`.
+- `GET /api/posts_published/:id`
+  - **Description**: Retrieves a single published post by its ID.
+
+#### Authenticated Endpoints (`Authorization: Bearer <token>` header required)
+
+- `POST /api/posts`
+  - **Description**: Creates a new post for the authenticated user.
+  - **Request Body**: `{ "post": { "title": "New Post Title", "body": "Content of the post." } }`
+- `GET /api/posts`
+  - **Description**: Retrieves a paginated list of posts for the authenticated user (including drafts).
+  - **Query Parameters**: `page`, `page_size`, `title`.
+- `GET /api/posts/:id`
+  - **Description**: Retrieves a single post by its ID, belonging to the authenticated user.
+- `PUT /api/posts/:id`
+  - **Description**: Updates an existing post belonging to the authenticated user.
+  - **Request Body**: `{ "post": { "title": "Updated Title", "body": "Updated content." } }`
+- `DELETE /api/posts/:id`
+  - **Description**: Deletes a post belonging to the authenticated user.
+
 ## Common Commands
 
 ### Start services
@@ -68,7 +107,6 @@ docker-compose exec web mix ecto.migrate
 docker-compose run --rm web mix run priv/repo/seeds.exs
 
 # Run tests
-docker-compose exec web mix test
 docker-compose run --rm web mix test
 
 
