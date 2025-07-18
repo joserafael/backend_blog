@@ -106,6 +106,9 @@ docker-compose exec web mix ecto.migrate
 # Run seeds
 docker-compose run --rm web mix run priv/repo/seeds.exs
 
+# Note: This command populates the database with 200 sample posts and creates
+# a user with the email `user@editor.com` and password `editor2025`.
+
 # Run tests
 docker-compose run --rm web mix test
 
