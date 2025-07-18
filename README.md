@@ -1,6 +1,6 @@
-# Docker Setup for Backend Blog
+# Backend Blog API
 
-This project includes Docker configuration for easy development setup with MySQL on a custom port.
+This project is a backend API for a blog designed to manage and display news articles. It includes a complete Docker configuration for an easy development setup.
 
 ## Quick Start
 
