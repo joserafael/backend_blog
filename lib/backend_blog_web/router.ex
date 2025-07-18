@@ -13,20 +13,22 @@ defmodule BackendBlogWeb.Router do
 
   scope "/api", BackendBlogWeb, as: :api do
     pipe_through :api
-    
+
     # Authentication routes
     post "/auth/register", AuthController, :register
     post "/auth/login", AuthController, :login
-    
+
     # Public routes
-    get "/posts", PostController, :index
-    get "/posts/:id", PostController, :show
+    get "/posts_published", PostController, :index_published
+    get "/posts_published/:id", PostController, :show_published
   end
 
   scope "/api", BackendBlogWeb, as: :api do
     pipe_through [:api, :auth]
-    
+
     # Protected routes
+    get "/posts", PostController, :index
+    get "/posts/:id", PostController, :show
     post "/posts", PostController, :create
     put "/posts/:id", PostController, :update
     patch "/posts/:id", PostController, :update

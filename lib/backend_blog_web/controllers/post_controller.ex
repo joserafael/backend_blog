@@ -12,10 +12,15 @@ defmodule BackendBlogWeb.PostController do
     render(conn, :index, page: page)
   end
 
+  def index_published(conn, params) do
+    page = Blog.list_published_posts() |> Repo.paginate(params)
+    render(conn, :index, page: page)
+  end
+
   def create(conn, %{"post" => post_params}) do
     current_user = Guardian.Plug.current_resource(conn)
     post_params = Map.put(post_params, "user_id", current_user.id)
-    
+
     with {:ok, %Post{} = post} <- Blog.create_post(post_params) do
       conn
       |> put_status(:created)
@@ -30,9 +35,15 @@ defmodule BackendBlogWeb.PostController do
     end
   end
 
+  def show_published(conn, %{"id" => id}) do
+    with {:ok, post} <- Blog.get_post_published(id) do
+      render(conn, :show, post: post)
+    end
+  end
+
   def update(conn, %{"id" => id, "post" => post_params}) do
     current_user = Guardian.Plug.current_resource(conn)
-    
+
     with {:ok, post} <- Blog.get_post(id),
          true <- post.user_id == current_user.id,
          {:ok, %Post{} = post} <- Blog.update_post(post, post_params) do
@@ -45,7 +56,7 @@ defmodule BackendBlogWeb.PostController do
 
   def delete(conn, %{"id" => id}) do
     current_user = Guardian.Plug.current_resource(conn)
-    
+
     with {:ok, post} <- Blog.get_post(id),
          true <- post.user_id == current_user.id,
          {:ok, %Post{}} <- Blog.delete_post(post) do

@@ -14,6 +14,10 @@ defmodule BackendBlog.Blog do
     from(p in Post, order_by: [desc: p.inserted_at, desc: p.id])
   end
 
+  def list_published_posts do
+    from(p in Post, where: p.draft == false, order_by: [desc: p.inserted_at, desc: p.id])
+  end
+
   @doc """
   Gets a single post, returns a tuple.
 
@@ -26,6 +30,12 @@ defmodule BackendBlog.Blog do
     end
   end
 
+  def get_post_published(id) do
+    case Repo.get_by(Post, id: id, draft: false) do
+      nil -> {:error, :not_found}
+      post -> {:ok, post}
+    end
+  end
   @doc """
   Creates a post.
   """
