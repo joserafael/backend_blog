@@ -20,6 +20,20 @@ if System.get_env("PHX_SERVER") do
   config :backend_blog, BackendBlogWeb.Endpoint, server: true
 end
 
+# Configure database for Docker development
+if config_env() == :dev and System.get_env("DATABASE_URL") do
+  database_url = System.get_env("DATABASE_URL")
+  
+  config :backend_blog, BackendBlog.Repo,
+    url: database_url,
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
+  
+  # Configure endpoint for Docker
+  config :backend_blog, BackendBlogWeb.Endpoint,
+    http: [ip: {0, 0, 0, 0}, port: 4000],
+    server: true
+end
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
