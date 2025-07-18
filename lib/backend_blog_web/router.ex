@@ -28,6 +28,7 @@ defmodule BackendBlogWeb.Router do
 
     # Protected routes
     get "/posts", PostController, :index
+    get "/posts/my-posts", PostController, :my_posts
     get "/posts/:id", PostController, :show
     post "/posts", PostController, :create
     put "/posts/:id", PostController, :update
